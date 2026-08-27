@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#181F25">
+  <title>Admin - Dhikr Bot</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark" style="background: linear-gradient(135deg, var(--dark), var(--dark-surface));">A</div>
+        <div class="brand-name">Admin</div>
+      </div>
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <svg class="moon-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        <svg class="sun-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+      </button>
+    </header>
+
+    <main class="app-content">
+      <!-- Login View -->
+      <div id="loginView" class="fade-in">
+        <h1 class="hero-title" style="font-size: 1.6rem; margin-bottom: 8px;">Admin Login</h1>
+        <p class="section-subtitle">Access the Dhikr Bot dashboard</p>
+
+        <form id="loginForm" style="margin-top: 24px;">
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" id="email" class="form-input" placeholder="admin@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" id="password" class="form-input" placeholder="Password" required>
+          </div>
+          <button type="submit" class="btn btn-primary" id="loginBtn">Login</button>
+        </form>
+      </div>
+
+      <!-- Dashboard View -->
+      <div id="dashboardView" class="hidden fade-in">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <div>
+            <h1 class="section-title" style="margin-bottom: 0;">Dashboard</h1>
+            <p class="section-subtitle" style="margin-bottom: 0;">Manage your Dhikr Bot</p>
+          </div>
+          <button class="btn btn-ghost" style="width: auto; padding: 8px 16px; font-size: 0.85rem;" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Status Card -->
+        <div class="card card-elevated" style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 style="font-size: 1rem;">Bot Status</h3>
+            <div id="botStatus" class="status-indicator offline">
+              <span class="status-dot"></span>
+              <span id="botStatusText">Offline</span>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div style="text-align: center; padding: 12px; background: var(--bg); border-radius: 12px;">
+              <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary);" id="subscriberCount">0</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">Subscribers</div>
+            </div>
+            <div style="text-align: center; padding: 12px; background: var(--bg); border-radius: 12px;">
+              <div style="font-size: 1.8rem; font-weight: 800; color: var(--accent-dark);" id="scheduleCount">0</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">Schedules</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Connection Card -->
+        <div class="card" style="margin-bottom: 16px;">
+          <h3 style="font-size: 1rem; margin-bottom: 16px;">WhatsApp Connection</h3>
+
+          <div class="form-group">
+            <label class="form-label">Connection Mode</label>
+            <select id="connMode" class="form-select">
+              <option value="qr">QR Code</option>
+              <option value="pairing">Phone Pairing Code</option>
+            </select>
+          </div>
+
+          <div id="phoneField" class="form-group hidden">
+            <label class="form-label">Phone Number (for pairing)</label>
+            <input type="tel" id="connPhone" class="form-input" placeholder="2348012345678">
+          </div>
+
+          <div id="qrDisplay" class="hidden" style="text-align: center; margin: 16px 0;">
+            <div style="background: white; padding: 16px; border-radius: 12px; display: inline-block;">
+              <div style="width: 200px; height: 200px; background: var(--light-bg); display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); font-size: 0.85rem; text-align: center; padding: 16px;">
+                QR code will appear here when the bot host is connected
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" id="connectBtn" onclick="connectBot()">Connect Bot</button>
+          <button class="btn btn-ghost" style="margin-top: 8px;" onclick="disconnectBot()">Disconnect</button>
+        </div>
+
+        <!-- Target Groups -->
+        <div class="card" style="margin-bottom: 16px;">
+          <h3 style="font-size: 1rem; margin-bottom: 16px;">Target Groups & Channels</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
+            Enter the WhatsApp group or channel IDs where Adhkar should be sent.
+          </p>
+          <div class="form-group">
+            <label class="form-label">Group IDs (one per line)</label>
+            <textarea id="groupIds" class="form-textarea" placeholder="123456789-1234567890@g.us" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Channel IDs (one per line)</label>
+            <textarea id="channelIds" class="form-textarea" placeholder="123456789@newsletter" rows="3"></textarea>
+          </div>
+          <button class="btn btn-secondary" onclick="saveTargets()">Save Targets</button>
+        </div>
+
+        <!-- Schedules -->
+        <div class="card" style="margin-bottom: 16px;">
+          <h3 style="font-size: 1rem; margin-bottom: 16px;">Schedules</h3>
+          <div id="schedulesList">
+            <div style="text-align: center; padding: 16px;">
+              <div class="spinner" style="margin: 0 auto;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subscribers -->
+        <div class="card">
+          <h3 style="font-size: 1rem; margin-bottom: 16px;">Subscribers</h3>
+          <div id="subscribersList">
+            <div style="text-align: center; padding: 16px;">
+              <div class="spinner" style="margin: 0 auto;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <nav class="bottom-nav">
+      <a href="/" class="bottom-nav-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Home
+      </a>
+      <a href="/dhikr" class="bottom-nav-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        Adhkar
+      </a>
+      <a href="/subscribe" class="bottom-nav-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        Subscribe
+      </a>
+      <a href="/admin" class="bottom-nav-item active">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        Admin
+      </a>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('dhikr-theme', next);
+    }
+    const savedTheme = localStorage.getItem('dhikr-theme');
+    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+
+    let adminToken = localStorage.getItem('dhikr-admin-token');
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    async function api(path, method = 'GET', body = null) {
+      const opts = {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': adminToken || '',
+        },
+      };
+      if (body) opts.body = JSON.stringify(body);
+      const resp = await fetch(`/api/${path}`, opts);
+      return resp.json();
+    }
+
+    // Check if already logged in
+    if (adminToken) {
+      showDashboard();
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<div class="spinner"></div> Logging in...';
+
+      try {
+        const resp = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+          }),
+        });
+        const data = await resp.json();
+        if (resp.ok && data.success) {
+          adminToken = data.token;
+          localStorage.setItem('dhikr-admin-token', adminToken);
+          showDashboard();
+        } else {
+          showToast(data.error || 'Login failed');
+        }
+      } catch (err) {
+        showToast('Network error');
+      }
+      btn.disabled = false;
+      btn.textContent = 'Login';
+    });
+
+    async function showDashboard() {
+      document.getElementById('loginView').classList.add('hidden');
+      document.getElementById('dashboardView').classList.remove('hidden');
+      await loadStatus();
+      await loadSchedules();
+      await loadSubscribers();
+    }
+
+    function logout() {
+      localStorage.removeItem('dhikr-admin-token');
+      adminToken = null;
+      document.getElementById('dashboardView').classList.add('hidden');
+      document.getElementById('loginView').classList.remove('hidden');
+    }
+
+    async function loadStatus() {
+      const data = await api('admin/status');
+      if (data.error) { showToast(data.error); return; }
+
+      const statusEl = document.getElementById('botStatus');
+      const statusText = document.getElementById('botStatusText');
+      if (data.botConnected) {
+        statusEl.className = 'status-indicator online';
+        statusText.textContent = 'Online';
+      } else {
+        statusEl.className = 'status-indicator offline';
+        statusText.textContent = 'Offline';
+      }
+
+      document.getElementById('subscriberCount').textContent = data.subscriberCount || 0;
+      document.getElementById('scheduleCount').textContent = data.targets?.groups?.length || 0;
+
+      if (data.targets?.groups?.length) {
+        document.getElementById('groupIds').value = data.targets.groups.join('\n');
+      }
+      if (data.targets?.channels?.length) {
+        document.getElementById('channelIds').value = data.targets.channels.join('\n');
+      }
+    }
+
+    async function loadSchedules() {
+      const data = await api('admin/schedules');
+      if (data.error) return;
+      const list = data.schedules || [];
+      document.getElementById('schedulesList').innerHTML = list.length === 0
+        ? '<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center;">No schedules configured.</p>'
+        : list.map(s => `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg); border-radius: 12px; margin-bottom: 8px;">
+            <div>
+              <div style="font-weight: 600; font-size: 0.9rem;">${s.name}</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">${s.category} - ${s.cronExpression}</div>
+            </div>
+            <div class="status-indicator ${s.enabled ? 'online' : 'offline'}" style="font-size: 0.75rem;">
+              <span class="status-dot"></span>
+              ${s.enabled ? 'Active' : 'Paused'}
+            </div>
+          </div>
+        `).join('');
+    }
+
+    async function loadSubscribers() {
+      const data = await api('admin/subscribers');
+      if (data.error) return;
+      const list = data.subscribers || [];
+      document.getElementById('subscribersList').innerHTML = list.length === 0
+        ? '<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center;">No subscribers yet.</p>'
+        : list.map(s => `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg); border-radius: 12px; margin-bottom: 8px;">
+            <div>
+              <div style="font-weight: 600; font-size: 0.9rem;">${s.name || s.phone}</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">${s.phone} - ${(s.subscriptions||[]).join(', ')}</div>
+            </div>
+          </div>
+        `).join('');
+    }
+
+    document.getElementById('connMode').addEventListener('change', (e) => {
+      const isPairing = e.target.value === 'pairing';
+      document.getElementById('phoneField').classList.toggle('hidden', !isPairing);
+      document.getElementById('qrDisplay').classList.toggle('hidden', isPairing);
+    });
+
+    async function connectBot() {
+      const mode = document.getElementById('connMode').value;
+      const phone = document.getElementById('connPhone').value;
+      const data = await api('admin/connect', 'POST', { mode, phone, session: 'dhikr-bot' });
+      if (data.success) {
+        showToast('Bot connection configured. Start your Wabot host to connect.');
+        loadStatus();
+      } else {
+        showToast(data.error || 'Failed');
+      }
+    }
+
+    async function disconnectBot() {
+      const data = await api('admin/disconnect', 'POST');
+      if (data.success) {
+        showToast('Bot disconnected');
+        loadStatus();
+      }
+    }
+
+    async function saveTargets() {
+      const groups = document.getElementById('groupIds').value.split('\n').map(s => s.trim()).filter(Boolean);
+      const channels = document.getElementById('channelIds').value.split('\n').map(s => s.trim()).filter(Boolean);
+      const data = await api('admin/targets', 'POST', { groups, channels });
+      if (data.success) {
+        showToast('Targets saved');
+        loadStatus();
+      }
+    }
+  </script>
+</body>
+</html>

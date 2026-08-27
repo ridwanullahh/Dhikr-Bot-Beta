@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#05B34D">
+  <title>Adhkar Library - Dhikr Bot</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark">D</div>
+        <div class="brand-name">Adhkar Library</div>
+      </div>
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <svg class="moon-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        <svg class="sun-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+      </button>
+    </header>
+
+    <main class="app-content">
+      <h1 class="section-title" style="margin-bottom: 4px;">Browse Adhkar</h1>
+      <p class="section-subtitle">Read and reflect on the remembrances of Allah</p>
+
+      <div class="category-tabs" id="categoryTabs">
+        <button class="category-tab active" data-cat="all">All</button>
+        <button class="category-tab" data-cat="morning">Morning</button>
+        <button class="category-tab" data-cat="evening">Evening</button>
+        <button class="category-tab" data-cat="general">General</button>
+        <button class="category-tab" data-cat="quranic">Quranic</button>
+        <button class="category-tab" data-cat="salawat">Salawat</button>
+      </div>
+
+      <div id="dhikrList">
+        <div style="text-align: center; padding: 48px;">
+          <div class="spinner" style="margin: 0 auto;"></div>
+          <p style="margin-top: 16px; color: var(--text-secondary); font-size: 0.9rem;">Loading Adhkar...</p>
+        </div>
+      </div>
+    </main>
+
+    <nav class="bottom-nav">
+      <a href="/" class="bottom-nav-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Home
+      </a>
+      <a href="/dhikr" class="bottom-nav-item active">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        Adhkar
+      </a>
+      <a href="/subscribe" class="bottom-nav-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        Subscribe
+      </a>
+      <a href="/admin" class="bottom-nav-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        Admin
+      </a>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('dhikr-theme', next);
+    }
+    const savedTheme = localStorage.getItem('dhikr-theme');
+    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+
+    let allDhikr = [];
+    let currentCategory = 'all';
+
+    async function loadDhikr() {
+      try {
+        const resp = await fetch('/api/dhikr');
+        const data = await resp.json();
+        allDhikr = data.dhikr || [];
+        renderDhikr();
+      } catch (err) {
+        document.getElementById('dhikrList').innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Failed to load Adhkar. Please try again.</p>';
+      }
+    }
+
+    function renderDhikr() {
+      const filtered = currentCategory === 'all'
+        ? allDhikr
+        : allDhikr.filter(d => d.category === currentCategory);
+
+      if (filtered.length === 0) {
+        document.getElementById('dhikrList').innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 32px;">No Adhkar in this category yet.</p>';
+        return;
+      }
+
+      document.getElementById('dhikrList').innerHTML = filtered.map(d => `
+        <div class="dhikr-card">
+          <div class="dhikr-arabic">${d.arabic || ''}</div>
+          <div class="dhikr-transliteration">${d.transliteration || ''}</div>
+          <div class="dhikr-translation">${d.translation || ''}</div>
+          ${d.virtue ? `<div class="dhikr-virtue">${d.virtue}</div>` : ''}
+          <div class="dhikr-meta">
+            <span class="dhikr-count">x${d.count || 1}</span>
+            <span class="dhikr-reference">${d.reference || ''}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('categoryTabs').addEventListener('click', (e) => {
+      if (e.target.classList.contains('category-tab')) {
+        document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+        e.target.classList.add('active');
+        currentCategory = e.target.dataset.cat;
+        renderDhikr();
+      }
+    });
+
+    loadDhikr();
+  </script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#05B34D">
+  <title>Dhikr Bot - Daily Islamic Remembrances</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark">D</div>
+        <div class="brand-name">Dhikr Bot</div>
+      </div>
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <svg class="moon-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        <svg class="sun-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+      </button>
+    </header>
+
+    <main class="app-content">
+      <div class="hero fade-in">
+        <div class="hero-badge">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          Bismillah
+        </div>
+        <h1 class="hero-title">Daily Adhkar,<br>Delivered to You</h1>
+        <p class="hero-subtitle">Receive morning and evening Adhkar, Quranic verses, and Salawat on the Prophet directly to your WhatsApp. Subscribe in seconds.</p>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <a href="/subscribe" class="btn btn-primary">Subscribe Now</a>
+          <a href="/dhikr" class="btn btn-secondary">Browse Adhkar</a>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div style="padding: 0 8px;">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Three simple steps to receive daily Adhkar</p>
+
+        <div class="card card-elevated" style="margin-bottom: 16px;">
+          <div style="display: flex; gap: 16px; align-items: flex-start;">
+            <div style="width: 40px; height: 40px; border-radius: 12px; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0;">1</div>
+            <div>
+              <h3 style="font-size: 1rem; margin-bottom: 4px;">Subscribe</h3>
+              <p style="font-size: 0.9rem; color: var(--text-secondary);">Enter your WhatsApp number and choose which Adhkar categories you want to receive.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-elevated" style="margin-bottom: 16px;">
+          <div style="display: flex; gap: 16px; align-items: flex-start;">
+            <div style="width: 40px; height: 40px; border-radius: 12px; background: var(--accent); color: var(--dark); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0;">2</div>
+            <div>
+              <h3 style="font-size: 1rem; margin-bottom: 4px;">Set Preferences</h3>
+              <p style="font-size: 0.9rem; color: var(--text-secondary);">Choose your preferred time: morning, evening, or both. Set your timezone for accurate delivery.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-elevated">
+          <div style="display: flex; gap: 16px; align-items: flex-start;">
+            <div style="width: 40px; height: 40px; border-radius: 12px; background: var(--primary-dark); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0;">3</div>
+            <div>
+              <h3 style="font-size: 1rem; margin-bottom: 4px;">Receive Adhkar</h3>
+              <p style="font-size: 0.9rem; color: var(--text-secondary);">Get beautifully formatted Adhkar with Arabic text, transliteration, and translation delivered to your WhatsApp.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div style="padding: 0 8px;">
+        <h2 class="section-title">Categories</h2>
+        <p class="section-subtitle">Choose what you want to receive</p>
+
+        <div class="card card-accent" style="margin-bottom: 12px;">
+          <h3 style="font-size: 1rem; color: var(--primary); margin-bottom: 4px;">Morning Adhkar</h3>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">Adhkar to recite after Fajr prayer for protection throughout the day.</p>
+        </div>
+
+        <div class="card card-accent" style="margin-bottom: 12px;">
+          <h3 style="font-size: 1rem; color: var(--primary); margin-bottom: 4px;">Evening Adhkar</h3>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">Adhkar to recite after Asr prayer for protection through the night.</p>
+        </div>
+
+        <div class="card card-gold" style="margin-bottom: 12px;">
+          <h3 style="font-size: 1rem; color: var(--accent-dark); margin-bottom: 4px;">Quranic Verses</h3>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">Selected verses for daily reflection and protection.</p>
+        </div>
+
+        <div class="card card-gold">
+          <h3 style="font-size: 1rem; color: var(--accent-dark); margin-bottom: 4px;">Salawat</h3>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">Daily blessings upon the Prophet Muhammad (peace be upon him).</p>
+        </div>
+      </div>
+    </main>
+
+    <nav class="bottom-nav">
+      <a href="/" class="bottom-nav-item active">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Home
+      </a>
+      <a href="/dhikr" class="bottom-nav-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        Adhkar
+      </a>
+      <a href="/subscribe" class="bottom-nav-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        Subscribe
+      </a>
+      <a href="/admin" class="bottom-nav-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        Admin
+      </a>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('dhikr-theme', next);
+    }
+
+    const savedTheme = localStorage.getItem('dhikr-theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+  </script>
+</body>
+</html>

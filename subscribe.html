@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#05B34D">
+  <title>Subscribe - Dhikr Bot</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark">D</div>
+        <div class="brand-name">Subscribe</div>
+      </div>
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <svg class="moon-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        <svg class="sun-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+      </button>
+    </header>
+
+    <main class="app-content">
+      <div id="subscribeForm" class="fade-in">
+        <h1 class="hero-title" style="font-size: 1.6rem; margin-bottom: 8px;">Subscribe to Dhikr Bot</h1>
+        <p class="section-subtitle">Receive daily Adhkar on your WhatsApp</p>
+
+        <form id="form" style="margin-top: 24px;">
+          <div class="form-group">
+            <label class="form-label">WhatsApp Number</label>
+            <input type="tel" id="phone" class="form-input" placeholder="2348012345678" required>
+            <p class="form-hint">Enter your number in international format (no +)</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Your Name (optional)</label>
+            <input type="text" id="name" class="form-input" placeholder="Abdullah">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Choose Your PIN</label>
+            <input type="password" id="pin" class="form-input" placeholder="4-digit PIN" maxlength="8" pattern="[0-9]{4,8}" required>
+            <p class="form-hint">Use this PIN to manage your subscription later</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Select Categories</label>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; cursor: pointer;">
+                <input type="checkbox" id="cat-morning" checked style="width: 20px; height: 20px; accent-color: var(--primary);">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem;">Morning Adhkar</div>
+                  <div style="font-size: 0.8rem; color: var(--text-secondary);">After Fajr prayer</div>
+                </div>
+              </label>
+              <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; cursor: pointer;">
+                <input type="checkbox" id="cat-evening" checked style="width: 20px; height: 20px; accent-color: var(--primary);">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem;">Evening Adhkar</div>
+                  <div style="font-size: 0.8rem; color: var(--text-secondary);">After Asr prayer</div>
+                </div>
+              </label>
+              <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; cursor: pointer;">
+                <input type="checkbox" id="cat-salawat" style="width: 20px; height: 20px; accent-color: var(--primary);">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem;">Salawat</div>
+                  <div style="font-size: 0.8rem; color: var(--text-secondary);">Blessings on the Prophet</div>
+                </div>
+              </label>
+              <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; cursor: pointer;">
+                <input type="checkbox" id="cat-quranic" style="width: 20px; height: 20px; accent-color: var(--primary);">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem;">Quranic Verses</div>
+                  <div style="font-size: 0.8rem; color: var(--text-secondary);">Selected verses for reflection</div>
+                </div>
+              </label>
+              <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; cursor: pointer;">
+                <input type="checkbox" id="cat-general" style="width: 20px; height: 20px; accent-color: var(--primary);">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem;">General Dhikr</div>
+                  <div style="font-size: 0.8rem; color: var(--text-secondary);">Daily remembrances</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Preferred Delivery Time</label>
+            <select id="preferredTime" class="form-select">
+              <option value="both">Both Morning & Evening</option>
+              <option value="morning">Morning Only</option>
+              <option value="evening">Evening Only</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Timezone</label>
+            <select id="timezone" class="form-select">
+              <option value="Africa/Lagos">Africa/Lagos (WAT)</option>
+              <option value="Africa/Cairo">Africa/Cairo (EET)</option>
+              <option value="Asia/Dubai">Asia/Dubai (GST)</option>
+              <option value="Asia/Karachi">Asia/Karachi (PKT)</option>
+              <option value="Asia/Riyadh">Asia/Riyadh (AST)</option>
+              <option value="Europe/London">Europe/London (GMT/BST)</option>
+              <option value="America/New_York">America/New_York (EST)</option>
+              <option value="UTC">UTC</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="submitBtn">Subscribe</button>
+        </form>
+
+        <div style="text-align: center; margin-top: 24px;">
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">
+            Already subscribed? <a href="#" onclick="showManage()" style="color: var(--primary); font-weight: 600;">Manage your subscription</a>
+          </p>
+        </div>
+      </div>
+
+      <div id="manageForm" class="hidden fade-in">
+        <h1 class="hero-title" style="font-size: 1.6rem; margin-bottom: 8px;">Manage Subscription</h1>
+        <p class="section-subtitle">View and update your preferences</p>
+
+        <form id="manageFormEl" style="margin-top: 24px;">
+          <div class="form-group">
+            <label class="form-label">WhatsApp Number</label>
+            <input type="tel" id="managePhone" class="form-input" placeholder="2348012345678" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">PIN</label>
+            <input type="password" id="managePin" class="form-input" placeholder="Your PIN" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary">View My Subscription</button>
+          <button type="button" class="btn btn-ghost" style="margin-top: 12px;" onclick="showSubscribe()">Back to Subscribe</button>
+        </form>
+
+        <div id="subscriptionDetails" class="hidden" style="margin-top: 24px;"></div>
+      </div>
+    </main>
+
+    <nav class="bottom-nav">
+      <a href="/" class="bottom-nav-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Home
+      </a>
+      <a href="/dhikr" class="bottom-nav-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        Adhkar
+      </a>
+      <a href="/subscribe" class="bottom-nav-item active">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        Subscribe
+      </a>
+      <a href="/admin" class="bottom-nav-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        Admin
+      </a>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('dhikr-theme', next);
+    }
+    const savedTheme = localStorage.getItem('dhikr-theme');
+    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function showManage() {
+      document.getElementById('subscribeForm').classList.add('hidden');
+      document.getElementById('manageForm').classList.remove('hidden');
+    }
+
+    function showSubscribe() {
+      document.getElementById('manageForm').classList.add('hidden');
+      document.getElementById('subscribeForm').classList.remove('hidden');
+    }
+
+    document.getElementById('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<div class="spinner"></div> Subscribing...';
+
+      const subscriptions = [];
+      if (document.getElementById('cat-morning').checked) subscriptions.push('morning');
+      if (document.getElementById('cat-evening').checked) subscriptions.push('evening');
+      if (document.getElementById('cat-salawat').checked) subscriptions.push('salawat');
+      if (document.getElementById('cat-quranic').checked) subscriptions.push('quranic');
+      if (document.getElementById('cat-general').checked) subscriptions.push('general');
+
+      if (subscriptions.length === 0) {
+        showToast('Please select at least one category');
+        btn.disabled = false;
+        btn.textContent = 'Subscribe';
+        return;
+      }
+
+      try {
+        const resp = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phone: document.getElementById('phone').value,
+            name: document.getElementById('name').value,
+            pin: document.getElementById('pin').value,
+            subscriptions,
+            preferredTime: document.getElementById('preferredTime').value,
+            timezone: document.getElementById('timezone').value,
+          }),
+        });
+        const data = await resp.json();
+        if (resp.ok && data.success) {
+          showToast(data.message || 'Subscribed successfully!');
+          setTimeout(() => { window.location.href = '/'; }, 2000);
+        } else {
+          showToast(data.error || 'Subscription failed');
+        }
+      } catch (err) {
+        showToast('Network error. Please try again.');
+      }
+      btn.disabled = false;
+      btn.textContent = 'Subscribe';
+    });
+
+    document.getElementById('manageFormEl').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.innerHTML = '<div class="spinner"></div> Checking...';
+
+      try {
+        const resp = await fetch('/api/subscription/check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phone: document.getElementById('managePhone').value,
+            pin: document.getElementById('managePin').value,
+          }),
+        });
+        const data = await resp.json();
+        if (resp.ok && data.success) {
+          const sub = data.subscriber;
+          document.getElementById('subscriptionDetails').innerHTML = `
+            <div class="card card-elevated">
+              <h3 style="font-size: 1.1rem; margin-bottom: 12px;">Your Subscription</h3>
+              <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>Name:</strong> ${sub.name || 'Not set'}</p>
+              <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>Phone:</strong> ${sub.phone}</p>
+              <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>Active:</strong> ${sub.active ? 'Yes' : 'No'}</p>
+              <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>Preferred Time:</strong> ${sub.preferredTime}</p>
+              <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>Subscriptions:</strong> ${(sub.subscriptions || []).join(', ')}</p>
+              <p style="font-size: 0.9rem; margin-bottom: 16px;"><strong>Timezone:</strong> ${sub.timezone}</p>
+              <button class="btn btn-ghost" onclick="unsubscribe('${sub.phone}')">Unsubscribe</button>
+            </div>
+          `;
+          document.getElementById('subscriptionDetails').classList.remove('hidden');
+        } else {
+          showToast(data.error || 'Not found');
+        }
+      } catch (err) {
+        showToast('Network error');
+      }
+      btn.disabled = false;
+      btn.textContent = 'View My Subscription';
+    });
+
+    async function unsubscribe(phone) {
+      if (!confirm('Are you sure you want to unsubscribe?')) return;
+      try {
+        const resp = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, pin: document.getElementById('managePin').value, active: false }),
+        });
+        const data = await resp.json();
+        if (data.success) {
+          showToast('Unsubscribed successfully');
+          setTimeout(() => window.location.reload(), 2000);
+        }
+      } catch (err) {
+        showToast('Error');
+      }
+    }
+  </script>
+</body>
+</html>
